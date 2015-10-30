@@ -24,7 +24,7 @@ block content
             select(name="conditionOperator")
               option(value="greater") Greater Than
               option(value="lesser") Lesser Than
-            input(name="conditionValue" type="number" step="1") 
+            input(name="conditionValue" type="number" step="1" required) 
             
             label(for="placename") What's this place's name?
             input(name="placename" type="text" required)
@@ -38,7 +38,7 @@ block content
         #points
           ul
             each point in points
-              li.watchPoint(id=point._id)= point.placename + " Message: " + point.message
+              li.watchPoint(id=point._id)= point.placename 
                 span= "Message: " + point.message
                 button.btn.btn-danger.btn-remove-point(id=point._id type="button" ) X
               //- span= point._id
