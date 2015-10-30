@@ -99,7 +99,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  * Watch Points Routes
  */
 app.post('/point',passportConf.isAuthenticated,pointsController.postNewWatch);
-
+app.delete('/point/:id',passportConf.isAuthenticated,pointsController.deletePoint);
 
 /**
  * Primary app routes.

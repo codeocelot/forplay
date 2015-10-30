@@ -35,13 +35,17 @@ block content
         #points
           ul
             each point in points
-              li= point.lat + " , " + point.lng + " message: " + point.message
+              li.watchPoint(id=point._id)= point.lat + " , " + point.lng 
+                span= "Message: " + point.message
                 button.btn.btn-danger.btn-remove-point(id=point._id type="button" ) X
-              span= point._id
+              //- span= point._id
+  
+  script(src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript")
   script.
     var map;
     var newPoint;
     var newLat,newLng;
+    var _csrf = '#{_csrf}';
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 49.703364, lng: -123.153993},
@@ -55,15 +59,36 @@ block content
           position:e.latLng,
           map:map
         })
-        //- var ltLngEl = document.getElementById('new_location')
-        //- ltLngEl.textContent = "lat: " + e.latLng.lat() + " lng: " + e.latLng.lng()
-        
+
         newLat = e.latLng.lat();
         newLng = e.latLng.lng();
         document.getElementById('newLat').value = newLat;
         document.getElementById('newLng').value = newLng;
       })
     }
+    $(document).ready(function(){
+      $("button.btn-remove-point").click(function(event){
+        var id = event.target.id;
+        $.ajax(
+          {
+            method:"DELETE",
+            url:'/point/'+id,
+            data:{_csrf:_csrf}
+          }
+        )
+      })
+      //- $("li.watchPoint").click(function(event){
+      //- var id = event.target.id;
+      //- if(newPoint) {
+      //-   newPoint.setMap(null);
+      //- }
+      //- newPoint = new google.maps.Marker({
+      //-   position:
+      //- })
+      //- })
+    })
+
+
   script(async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH6DTDtgkpiGUnlRQb_moDKizuo2MNFzI&callback=initMap")
     //- .col-sm-6
     //-   h2 Heading
