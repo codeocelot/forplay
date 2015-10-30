@@ -124,6 +124,9 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
+    user.profile.phoneNumber = req.body.phoneNumber || '';
+    console.log('userprofile is: ', user.profile);
+    console.log('req.body is ', req.body)
 
     user.save(function(err) {
       if (err) return next(err);

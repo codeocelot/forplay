@@ -29,6 +29,7 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
+var pointsController = require('./controllers/watchPoints');
 
 /**
  * API keys and Passport configuration.
@@ -94,11 +95,16 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+/**
+ * Watch Points Routes
+ */
+app.post('/point',passportConf.isAuthenticated,pointsController.postNewWatch);
+
 
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
+app.get('/', passportConf.isAuthenticated,homeController.index);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

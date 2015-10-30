@@ -29,7 +29,7 @@ module.exports = {
     user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
     password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
   },
-  
+
   mandrill: {
     user: process.env.MANDRILL_USER || 'hackathonstarterdemo',
     password: process.env.MANDRILL_PASSWORD || 'E1K950_ydLR4mHw12a0ldA'
@@ -78,8 +78,8 @@ module.exports = {
   },
 
   google: {
-    clientID: process.env.GOOGLE_ID || '828110519058.apps.googleusercontent.com',
-    clientSecret: process.env.GOOGLE_SECRET || 'JdZsIaWhUFIchmC1a_IZzOHb',
+    clientID: process.env.GOOGLE_ID || '562473561258-7lff0u760midck8k4arka43d1m354tqq.apps.googleusercontent.com',
+		clientSecret: process.env.GOOGLE_SECRET || 's1z1PgIo9vXodpYOd41Wx4mQ',
     callbackURL: '/auth/google/callback',
     passReqToCallback: true
   },
@@ -146,6 +146,10 @@ module.exports = {
 
   bitcore: {
     bitcoinNetwork: process.env.BITCORE_BITCOIN_NETWORK || 'testnet'
-  }
+  },
+
+  forecastApiKey : "c53e1ef4891a94f9bc5e8abe6cd1cfb4",
+  textBeltUrl:'https://textbelt.com/canada',
+
 
 };
