@@ -31,6 +31,7 @@
     "express-session": "^1.12.0",
     "express-validator": "^2.18.0",
     "fbgraph": "^1.1.0",
+    "forecast.io-bluebird": "0.0.1",
     "github-api": "^0.10.6",
     "instagram-node": "^0.5.8",
     "jade": "^1.11.0",
