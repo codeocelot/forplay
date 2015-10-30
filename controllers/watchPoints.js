@@ -7,7 +7,7 @@ var _ = require('underscore')
 var Forecast = require('forecast.io-bluebird');
 var forecast = new Forecast({key:secrets.forecastApiKey,timeout:2500});
 var forecastOptions = {
-  units : 'si'
+  units : 'ca'
 }
 
 var textBeltUrl = secrets.textBeltUrl;

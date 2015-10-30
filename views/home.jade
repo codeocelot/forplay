@@ -19,12 +19,20 @@ block content
             //- input#phoneNumber(type="text" )
             label(for="condition") Condition:
             select(name="conditionType")
-              option(value="windSpeed") WindSpeed
-              option(value="sunshine") Sunshine
+              option(value="windSpeed") WindSpeed (km/h)
+              option(value="temperature") Temperature (C)
+              option(value="apparentTemperature") Apparent Temperature (C)
+              option(value="pressue") Pressure (mPa)
+              option(value="precipProbability") Probability Precipitation (%)
+              option(value="precipIntensity") Precipitation Intensity (mm/hr)
+              option(value="cloudCover") Cloud Cover (%)
+              option(value="humidity") Humidity (%)
+              option(value="ozone") Ozone(DU)
+              
             select(name="conditionOperator")
               option(value="greater") Greater Than
               option(value="lesser") Lesser Than
-            input(name="conditionValue" type="number" step="1" required) 
+            input(name="conditionValue" type="number" step="any" required) 
             
             label(for="placename") What's this place's name?
             input(name="placename" type="text" required)
