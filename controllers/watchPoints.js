@@ -14,7 +14,7 @@ var textBeltUrl = secrets.textBeltUrl;
 var forecastApiKey = secrets.forecastApiKey;
 
 // cronjob to text people
-new CronJob('* * */6 * * *',doCron(),null, false, 'America/Los_Angeles')
+new CronJob('* * */6 * * *',doCron(),null, true, 'America/Los_Angeles')
 
 function doCron(){
   console.log('new cron job begun')
