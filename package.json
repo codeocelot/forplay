@@ -43,6 +43,7 @@
     "mongodb": "^2.0.47",
     "mongoose": "^4.2.3",
     "morgan": "^1.6.1",
+    "newforms": "^0.13.2",
     "node-foursquare": "^0.3.0",
     "node-linkedin": "^0.5.1",
     "node-sass-middleware": "^0.9.7",
@@ -57,6 +58,7 @@
     "passport-oauth": "^1.0.0",
     "passport-twitter": "^1.0.3",
     "paypal-rest-sdk": "^1.6.3",
+    "react": "^0.14.1",
     "request": "^2.65.0",
     "serve-favicon": "^2.3.0",
     "stripe": "^4.0.0",
@@ -70,9 +72,13 @@
   "devDependencies": {
     "blessed": "^0.1.81",
     "chai": "^3.4.0",
+    "jsx-loader": "^0.13.2",
     "mocha": "^2.3.3",
     "multiline": "^1.0.2",
-    "supertest": "^1.1.0"
+    "supertest": "^1.1.0",
+    "watchify": "^3.6.0",
+    "webpack": "^1.12.2",
+    "webpack-dev-server": "^1.12.1"
   },
   "license": "MIT"
 }

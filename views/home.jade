@@ -7,9 +7,6 @@ block content
 
   <!-- React -->
   
-  
-  h1 ForPlay
-  p.lead Everyone loves a little fun.
   hr
   .row#react-app
   .row
@@ -17,13 +14,15 @@ block content
         #map(style="width:100%;min-height:600px;")
     .col-sm-6
         #controls
-          form.newPoint.form-horizontal(method="POST" action="/point" onsubmit="")
+          buttn.btn.btn-primary#createBtn( data-toggle='collapse' data-target=".newPoint" ) Create new trigger
+          form.newPoint.form.collapse(method="POST" action="/point" onsubmit="")
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
               label(for="lat" ) Latitude:
               input.form-control#newLat(name="lat" type="number" step="any" placeholder="<--- select on map" required)
               label(for="lng" ) Longitude:
               input.form-control#newLng(name="lng" type="number" step="any" placeholder="<--- select on map" required)
+            
             
             //- label(for="phoneNumber") Phone Number:
             //- input#phoneNumber(type="text" )
@@ -146,7 +145,9 @@ block content
       //- cont += "<button data-toggle='collapse' data-target='#collapse'>Details</button>"
       cont += "<button class='btn btn-danger btn-remove-point' id='"+point._id+"'>X</button>"
       cont += "<div class='panel-collapse collapse' id='collapse"+point._id+"'>"
-      cont += "<span>" + capitalizeFirstLetter(point.condition.type) + " " + point.condition.operator + + " " + point.condition.value + "</span>"
+      cont += "<span>" + capitalizeFirstLetter(point.condition.type) + " " + point.condition.operator + " than " + point.condition.value + "</span><br>"
+      cont+= "<a href='https://forecast.io/#/f/"+point.lat + ","+point.lng + "'>View Current Conditions </a>"
+      //- cont+="<a href='http://forecast.io/#/f/49.8486,-122.8766'>Alt link</a>"
       cont += "</div>"  
       cont += "</li>"
       

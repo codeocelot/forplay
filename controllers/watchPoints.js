@@ -13,6 +13,12 @@ var forecastOptions = {
 var textBeltUrl = secrets.textBeltUrl;
 var forecastApiKey = secrets.forecastApiKey;
 
+function formatMessage(hours,point){
+  var condition = point.condition;
+  var numHours = hits.length;
+  var msg = "Alert " + condition.type + " " + condition.operator + " than " + condition.value + " for " + numHours + " of nxt 49hrs "+ " " + point.message;
+}
+
 // cronjob to text people
 // new CronJob('* * */6 * * *',doCron(),null, true, 'America/Los_Angeles')
 
@@ -23,7 +29,7 @@ function doCron(){
       return console.error('could not get points from mongo.');
     }
     else{
-      points.forEach(function(el){
+      points.forEach(function(point){
         // first gotta get the user's phone number.
         MongoClient.connect(secrets.db,function(err,db){
           var objID = new ObjectID(el.userID);
@@ -35,17 +41,12 @@ function doCron(){
               if(!user.profile || !user.profile.phoneNumber){
                 return // can't contact them I guess...
               }
-              checkWeatherCondition(el.condition,el.lat,el.lng,function(err,hits){
-
-                //console.log('returned hits length: ', hits.length);
+              checkWeatherCondition(point.condition,point.lat,point.lng,function(err,hits){
                 if( !hits || !hits.length || err) {
                   console.log('error occured', err);
                   return;
                 }
-                var condition = el.condition;
-                var numHours = hits.length;
-                var msg = "Alert " + condition.type + " " + condition.operator + " than " + condition.value + " for " + numHours + " of nxt 49hrs "+ " " + el.message;
-                // var msg = "Alert " + condition.type + " at "
+                var msg = formatMessage(hits,el)
                 sendSms({
                   number:user.profile.phoneNumber,
                   message:msg
@@ -62,33 +63,24 @@ function doCron(){
 function checkWeatherCondition(condition,lat,lng,callback){
   fetchTheWeather(lat,lng)
     .then(function(weather){
-      // variable operator
       var ops = {
         "greater" : function(a,b){return a > b},
         "lesser" : function(a,b){return a < b},
         "equal" : function(a,b){return a === b}
       }
-      // variable operator end
       var hourlyObs = weather.hourly.data;
       var hits = _.filter(hourlyObs,function(obs){
         var observedValue = obs[condition.type];
         var operator = ops[condition.operator];
         var storedValue = +condition.value;
-        // console.log('comparing: ',observedValue,storedValue);
-        // console.log(operator(observedValue,storedValue));
         return operator(observedValue,storedValue);
       });
-      //console.log(hits);
       if(hits.length){
-        // var msg = "The "+ condition.type + " is " condition.operator + " than " + condition.value;
-        //console.log("sending back this hits: ", hits);
         return callback(null,hits);
       }
       else{
         return callback({error:'no hits found'},null);
       }
-
-
     })
     .catch(function(err){
       console.error("couldn't get the weather, ", err)
