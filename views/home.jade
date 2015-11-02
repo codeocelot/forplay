@@ -137,13 +137,16 @@ block content
       map.setCenter(new google.maps.LatLng(+point.lat,+point.lng))
     }
     function renderListElement(point){
+      function capitalizeFirstLetter(str){
+        return str.charAt(0).toUpperCase() + str.slice(1);
+      }
       var cont = "";
-      cont += "<li class='watchPoint list-group-item' id='" + point._id + "' data-toggle='collapse' data-target='#collapse"+point._id+"' data-parent='#points'>";
+      cont += "<li class='watchPoint list-group-item ' id='" + point._id + "' data-toggle='collapse' data-target='#collapse"+point._id+"' data-parent='#points'>";
       cont += "<span>"+point.placename+"</span>";
       //- cont += "<button data-toggle='collapse' data-target='#collapse'>Details</button>"
       cont += "<button class='btn btn-danger btn-remove-point' id='"+point._id+"'>X</button>"
       cont += "<div class='panel-collapse collapse' id='collapse"+point._id+"'>"
-      cont += "Stats right here"
+      cont += "<span>" + capitalizeFirstLetter(point.condition.type) + " " + point.condition.operator + + " " + point.condition.value + "</span>"
       cont += "</div>"  
       cont += "</li>"
       
