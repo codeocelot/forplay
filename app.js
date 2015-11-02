@@ -100,6 +100,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
  */
 app.post('/point',passportConf.isAuthenticated,pointsController.postNewWatch);
 app.delete('/point/:id',passportConf.isAuthenticated,pointsController.deletePoint);
+app.get('/points',passportConf.isAuthenticated,pointsController.getPointsRequest);
 
 /**
  * Primary app routes.

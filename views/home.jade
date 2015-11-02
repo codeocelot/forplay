@@ -1,6 +1,13 @@
 extends layout
 
 block content
+  <!-- React -->
+  //- base(href="/")
+  
+
+  <!-- React -->
+  
+  
   h1 ForPlay
   p.lead Everyone loves a little fun.
   hr
@@ -10,65 +17,80 @@ block content
         #map(style="width:100%;min-height:600px;")
     .col-sm-6
         #controls
-          form.newPoint(method="POST" action="/point" onsubmit="")
+          form.newPoint.form-horizontal(method="POST" action="/point" onsubmit="")
             input(type='hidden', name='_csrf', value=_csrf)
-            label(for="lat" style="margin-right:50px;") Latitude:
-            input#newLat(name="lat" type="number" step="any" required)
-            label(for="lng" ) Longitude:
-            input#newLng(name="lng" type="number" step="any" required)
+            .form-group
+              label(for="lat" ) Latitude:
+              input.form-control#newLat(name="lat" type="number" step="any" placeholder="<--- select on map" required)
+              label(for="lng" ) Longitude:
+              input.form-control#newLng(name="lng" type="number" step="any" placeholder="<--- select on map" required)
+            
             //- label(for="phoneNumber") Phone Number:
             //- input#phoneNumber(type="text" )
-            label(for="condition") Condition:
-            select(name="conditionType")
-              option(value="windSpeed") WindSpeed (km/h)
-              option(value="temperature") Temperature (C)
-              option(value="apparentTemperature") Apparent Temperature (C)
-              option(value="pressure") Pressure (mPa)
-              option(value="precipProbability") Probability Precipitation (%)
-              option(value="precipIntensity") Precipitation Intensity (mm/hr)
-              option(value="cloudCover") Cloud Cover (%)
-              option(value="humidity") Humidity (%)
-              option(value="ozone") Ozone(DU)
-              
-            select(name="conditionOperator")
-              option(value="greater") Greater Than
-              option(value="lesser") Lesser Than
-              option(value="equal") Equal To
-            input(name="conditionValue" type="number" step="any" required) 
-            
-            label(for="placename") What's this place's name?
-            input(name="placename" type="text" required)
-            label(for="Phone Message") Phone Message (Optional)
-            input(type="text" name="message")
+            .form-group
+              label(for="condition") Condition:
+              select.form-control(name="conditionType")
+                option(value="windSpeed") WindSpeed (km/h)
+                option(value="temperature") Temperature (C)
+                option(value="apparentTemperature") Apparent Temperature (C)
+                option(value="pressure") Pressure (mPa)
+                option(value="precipProbability") Probability Precipitation (%)
+                option(value="precipIntensity") Precipitation Intensity (mm/hr)
+                option(value="cloudCover") Cloud Cover (%)
+                option(value="humidity") Humidity (%)
+                option(value="ozone") Ozone(DU)
+                
+              select.form-control(name="conditionOperator")
+                option(value="greater") Greater Than
+                option(value="lesser") Lesser Than
+                option(value="equal") Equal To
+              input.form-control(name="conditionValue" type="number" step="any" required placeholder="Threshold") 
+            .form-group
+              label(for="placename") What's this place's name?
+              input.form-control(name="placename" type="text" required)
+            .form-group
+              label(for="Phone Message") Phone Message (Optional)
+              input.form-control(type="text" name="message")
             //- label(for="frequency") Update me every:
             //- select(name="frequency")
             //-   option(value="")
-              
-            button(type="submit") Submit
-        #points
-          ul
-            each point in points
-              li.watchPoint(id=point._id)= point.placename 
-                span= "Message: " + point.message
-                button.btn.btn-danger.btn-remove-point(id=point._id type="button" ) X
-              //- span= point._id
+            .form-group  
+              button.btn.btn-default(type="submit" onsubmit="return false;") Submit
+        div.points-container
+          ul#points.list-group
+
   
-  script(src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript")
+  //- script(src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript")
   script.
     var map;
     var newPoint;
     var newLat,newLng;
+    var setPoints = [];
     var _csrf = '#{_csrf}';
     function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
         center: {lat: 49.703364, lng: -123.153993},
         zoom: 8
       });
+      setPoints.forEach(function(point,i){
+        setPoints[i].marker = new google.maps.Marker({
+          icon:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+          position:{lat:+point.lat,lng:+point.lng},
+          map:map
+        })
+      })
+
+      getPoints();
+      setListener();
+    }
+    
+    function setListener(){
       map.addListener('click',function(e){
         if(newPoint){
           newPoint.setMap(null)
         }
         newPoint = new google.maps.Marker({
+          icon:'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
           position:e.latLng,
           map:map
         })
@@ -78,51 +100,73 @@ block content
         document.getElementById('newLat').value = newLat;
         document.getElementById('newLng').value = newLng;
       })
+      
+
     }
-    $(document).ready(function(){
-      $("button.btn-remove-point").click(function(event){
-        var id = event.target.id;
-        $.ajax(
-          {
-            method:"DELETE",
-            url:'/point/'+id,
-            data:{_csrf:_csrf},
-            success:function(){
-              $('#'+id).remove();
+    
+    function getPoints(){
+      $.get("points",function(points){
+        setPoints = points;
+        setPoints.map(function(point){
+          renderListElement(point);
+          point.marker=addMarker(point);
+        });
+        $(".watchPoint").click(function(e){
+          centerPoint(e.currentTarget.id);
+          
+        })
+        $("button.btn-remove-point").click(function(event){
+          var id = event.target.id;
+          $.ajax(
+            {
+              method:"DELETE",
+              url:'/point/'+id,
+              data:{_csrf:_csrf},
+              success:function(){
+                $('#'+id).remove();
+                removeMarker(id);
+              }
             }
-          }
-        )
+          )
+        })
       })
-      //- $("li.watchPoint").click(function(event){
-      //- var id = event.target.id;
-      //- if(newPoint) {
-      //-   newPoint.setMap(null);
-      //- }
-      //- newPoint = new google.maps.Marker({
-      //-   position:
-      //- })
-      //- })
-    })
+    }
+
+    function centerPoint(id){
+      var point = setPoints.find(function(point){return point._id === id})
+      map.setCenter(new google.maps.LatLng(+point.lat,+point.lng))
+    }
+    function renderListElement(point){
+      var cont = "";
+      cont += "<li class='watchPoint list-group-item' id='" + point._id + "' data-toggle='collapse' data-target='#collapse"+point._id+"' data-parent='#points'>";
+      cont += "<span>"+point.placename+"</span>";
+      //- cont += "<button data-toggle='collapse' data-target='#collapse'>Details</button>"
+      cont += "<button class='btn btn-danger btn-remove-point' id='"+point._id+"'>X</button>"
+      cont += "<div class='panel-collapse collapse' id='collapse"+point._id+"'>"
+      cont += "Stats right here"
+      cont += "</div>"  
+      cont += "</li>"
+      
+      $("ul#points").append(
+        cont
+      )
+    }
+    
+    function addMarker(point){
+      console.log(point)
+      return new google.maps.Marker({
+        icon:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+        position:{lat:+point.lat,lng:+point.lng},
+        map:map
+      })
+    }
+    
+    function removeMarker(id){
+      //var setPoints = setPoints || [];
+      setPoints.forEach(function(el,i){
+        if(el._id === id) setPoints[i].marker.setMap(null);
+      })
+    }
 
 
   script(async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH6DTDtgkpiGUnlRQb_moDKizuo2MNFzI&callback=initMap")
-    //- .col-sm-6
-    //-   h2 Heading
-    //-   p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-    //-   p
-    //-     a.btn.btn-default(href='#', role='button') View details »
-    //- .col-sm-6
-    //-   h2 Heading
-    //-   p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-    //-   p
-    //-     a.btn.btn-default(href='#', role='button') View details »
-    //- .col-sm-6
-    //-   h2 Heading
-    //-   p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-    //-   p
-    //-     a.btn.btn-default(href='#', role='button') View details »
-    //- .col-sm-6
-    //-   h2 Heading
-    //-   p Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.
-    //-   p
-    //-     a.btn.btn-default(href='#', role='button') View details »

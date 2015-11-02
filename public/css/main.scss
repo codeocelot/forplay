@@ -62,3 +62,35 @@ footer {
 .fa {
   margin-right: 6px;
 }
+
+// new point form
+form.newPoint{
+  .form-group{
+
+  }
+}
+
+// points
+
+ul#points{
+
+  padding-left:0px;
+  li
+  {
+    line-height:33px;
+    list-style: none;
+    min-height:33px;
+    padding-left:20px;
+    &:nth-child(odd){
+      background:#CCC;
+    }
+    .btn-remove-point{
+      float:right;
+    }
+  }
+}
+
+
+.points-container{
+  padding-top:30px;
+}

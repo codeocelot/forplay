@@ -14,7 +14,7 @@ var textBeltUrl = secrets.textBeltUrl;
 var forecastApiKey = secrets.forecastApiKey;
 
 // cronjob to text people
-new CronJob('* * */6 * * *',doCron(),null, true, 'America/Los_Angeles')
+// new CronJob('* * */6 * * *',doCron(),null, true, 'America/Los_Angeles')
 
 function doCron(){
   console.log('new cron job begun')
@@ -136,7 +136,9 @@ function getAllPoints(callback){
   })
 }
 
-exports.getPoints = function(userID,callback){
+
+
+exports.getPoints = getPoints = function(userID,callback){
   MongoClient.connect(secrets.db,function(err,db){
     var col = db.collection('watchPoints');
     var objId = new ObjectID(userID.toString());
@@ -147,6 +149,13 @@ exports.getPoints = function(userID,callback){
   })
 }
 
+exports.getPointsRequest = function(req,res){
+  getPoints(req.user._id,function(err,points){
+    if(err) return res.status(500);
+    res.status(200).send(points);
+  })
+}
+
 exports.deletePoint = function(req,res){
   console.log("point to delete: ", req.params.id);
   var id = new ObjectID(req.params.id.toString());
@@ -154,19 +163,21 @@ exports.deletePoint = function(req,res){
     // do some error checking
     var col = db.collection('watchPoints');
     col.deleteOne({_id:id},function(err,result){
-      if(err)
-        req.flash('error',{msg:'could not delete point'});
-      else req.flash('success',{msg:'successfully deleted point'})
+      // if(err)
+      //   req.flash('error',{msg:'could not delete point'});
+      // else req.flash('success',{msg:'successfully deleted point'})
       // res.redirect('/')
-      res.status(200).send('')
+      res.status(200).send('hi world')
+      console.log('successfully deleted')
+      return;
     })
   })
 }
 
 exports.postNewWatch = function(req,res){
   var id = req.user._id,
-  lat = req.body.lat,
-  lng = req.body.lng,
+  lat = +req.body.lat,
+  lng = +req.body.lng,
   placename = req.body.placename;
   condition = {
     type:req.body.conditionType,
@@ -176,11 +187,11 @@ exports.postNewWatch = function(req,res){
   message = req.body.message || '';
   insertWatchPoint(req.user._id,placename,lat,lng,condition,message,function(err,result){
     if(err){
-      req.flash('error', { msg: 'Could not save point.' });
+      //req.flash('error', { msg: 'Could not save point.' });
       res.redirect('/');
       return;
     }
-    req.flash('success', { msg: 'Success! You just saved a point' });
+    //req.flash('success', { msg: 'Success! You just saved a point' });
     res.redirect('/');
     return;
   })
