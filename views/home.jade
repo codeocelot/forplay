@@ -3,17 +3,36 @@ extends layout
 block content
 
   
-  hr
   .row
-    .col-xs-offset-1.col-xs-10.col-md-6(style="height:100%;")
-        #map(style="width:100%;min-height:600px;")
-    .col-sm-6
+    .col-sm-12
+      h4 How it works
+      p We'll send you a text message when the weather is perfect at your chosen location.  Get notified up to 48 hours before big wind at Nitinat, a massive powder dump at Whistler, or chose your own conditions to look out for.
+  .row
+    //- .col-sm-6(style="height:100%;")
+    //-     
+    .col-sm-12
         #controls
-          select.btn.btn-primary
-            option(value="1") Select a Popular location
-            option(value="Whistler") Whistler
-          buttn.btn.btn-primary#createBtn( data-toggle='collapse' data-target=".newPoint" ) Create new trigger
+          form(method="POST"  action="/point").input-group
+            input(type="hidden" value=_csrf name='_csrf')
+            select.form-control(style="width:inherit" name="preset")
+              option(value="1") Select a Popular location
+              option(value='{"lat":123.123,"lng":-49,"placename":"Whistler","conditionType":"cloudCover","conditionOperator":"less","conditionValue":10,"message":"Bluebird Day in Whistler"}') Bluebird in Whistler
+              option(value="Whistler") Powder Day in Whistler
+              option(value="Tofino") Primo Waves in Tofino
+              option(value="Nitinat") Big Wind in Nitinat
+            button.btn.btn-primary() Add
+          //- .input-group
+          //-   .input-group-btn
+          //-     button.btn.btn-default(type="button" dropdown-toggle data-toggle="dropdown")
+          //-       span Select a popular location
+          //-     ul.dropdown-menu.dropdown-menu-left
+          //-       li
+          //-         a(href="#") Bluebird in Whistler
+          //-         a(href="#") Powder Day in Whis
+            
+          button.btn.btn-primary#createBtn( data-toggle='collapse' data-target=".newPoint" type="button" ) Create Custom Notification
           form.newPoint.form.collapse(method="POST" action="/point" onsubmit="")
+            #map(style="width:100%;min-height:600px;")
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
               label(for="lat" ) Latitude:

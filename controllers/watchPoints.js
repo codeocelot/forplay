@@ -167,6 +167,16 @@ exports.deletePoint = function(req,res){
 }
 
 exports.postNewWatch = function(req,res){
+
+  // pre-defined location
+  console.log('received predifined valued ', req.body.preset)
+  if(req.body.preset){
+    console.log(req.body.preset)
+    req.body = JSON.parse(req.body.preset);
+    console.log(req.body);
+    console.log(req.body.lat,req.body.lng)
+  }
+
   var id = req.user._id,
   lat = +req.body.lat,
   lng = +req.body.lng,
@@ -176,10 +186,14 @@ exports.postNewWatch = function(req,res){
     operator:req.body.conditionOperator,
     value:req.body.conditionValue
   }
+  if(!lat || !lng || !placename || !condition.type || !condition.operator || !condition.value){
+    console.log('received ', lat,lng,placename,condition.type,condition.operator,condition.value)
+    return res.send('invalid input').status(400);
+  }
   message = req.body.message || '';
   insertWatchPoint(req.user._id,placename,lat,lng,condition,message,function(err,result){
     if(err){
-      //req.flash('error', { msg: 'Could not save point.' });
+      req.flash('error', { msg: 'Could not save point.' });
       res.redirect('/');
       return;
     }
@@ -187,4 +201,6 @@ exports.postNewWatch = function(req,res){
     res.redirect('/');
     return;
   })
+
+
 }
