@@ -1,0 +1,54 @@
+extends ../layout
+
+block content
+  .panel.col-sm-6.col-sm-offset-3
+    .panel-body
+      .page-header
+        h2 You're almost there.
+        p Tell us how to notify you.
+
+      form.form-horizontal#onboardForm(action='/onboard', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.col-sm-3.control-label(for='phoneNumber') Phone Number
+          .col-sm-7
+            input.form-control(type='tel', name='phoneNumber', id='phoneNumber' required autocomplete="off")
+        //- .form-group
+        //-   label.col-sm-3.control-label(for='name') Name
+        //-   .col-sm-7
+        //-     input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+        .form-group
+          label.control-label.col-sm-12 When are you free? You can always changes this if your schedule changes.
+          | * We use this to ensure you're not tempted to skip work to go skiing.
+          br
+          .col-sm-offset-3.col-sm-7
+            button.btn.btn-block.btn-success.day(type="button" )
+              | Monday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="monday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Tuesday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="tuesday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Wednesday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="wednesday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Thursday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="thursday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Friday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="friday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Saturday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="saturday" value="true")
+            button.btn.btn-block.btn-success.day(type="button")
+              | Sunday
+              i.fa.fa-check.pull-right
+              input(type="hidden" name="sunday" value="true")
+        button.btn.btn-primary.pull-right Let's go!
+        
