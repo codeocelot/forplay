@@ -96,7 +96,8 @@ exports.postSignup = function(req, res, next) {
       if (err) return next(err);
       req.logIn(user, function(err) {
         if (err) return next(err);
-        res.redirect('/');
+        console.log('made new user')
+        res.redirect('/onboard');
       });
     });
   });
@@ -342,8 +343,8 @@ exports.postForgot = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
+        from: 'hello@climeclast.com',
+        subject: 'Reset your password on Climecast',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -359,3 +360,31 @@ exports.postForgot = function(req, res, next) {
     res.redirect('/forgot');
   });
 };
+
+exports.getOnboard = function(req,res){
+  if(req.user && req.user.schedule && req.user.phoneNumber){
+    return res.redirect('/');
+  }
+  res.render('account/onboard.jade')
+}
+
+exports.postOnboard = function(req,res){
+  var sched = [];
+  console.log(req.body);
+  if(req.body.monday === 'true') sched.push('monday')
+  if(req.body.tuesday === 'true') sched.push('tuesday')
+  if(req.body.wednesday === 'true') sched.push('wednesday')
+  if(req.body.thursday === 'true') sched.push('thursday')
+  if(req.body.friday === 'true') sched.push('friday')
+  if(req.body.saturday === 'true') sched.push('saturday')
+  if(req.body.sunday === 'true') sched.push('sunday')
+  User.findById(req.user.id,function(err,user){
+    user.schedule = sched,
+    user.profile.phoneNumber = req.body.phoneNumber
+    user.save(function(err) {
+      if (err) return next(err);
+      req.flash('success', { msg: 'Profile information updated.' });
+      res.redirect('/');
+    });
+  })
+}

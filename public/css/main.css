@@ -1604,7 +1604,7 @@ mark,
   text-align: right;
 }
 
-.text-center {
+.text-center, .page-header {
   text-align: center;
 }
 
@@ -11750,4 +11750,12 @@ ul#points li .btn-remove-point {
 
 .points-container {
   padding-top: 30px;
+}
+
+.panel {
+  background-color: rgba(255, 255, 255, 0.71);
+}
+
+.disabled {
+  display: none;
 }

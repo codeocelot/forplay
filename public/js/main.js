@@ -4,6 +4,14 @@ $(document).ready(function() {
   if(document.getElementById('map'))
     initMap();
 
+  if($('button.day')){
+    decorateDayButtons();
+  }
+
+  // if($("form#onboardForm")){
+  //   handleOnboardForm();
+  // }
+
 });
 
 
@@ -134,3 +142,25 @@ function removeMarker(id){
     if(el._id === id) setPoints[i].marker.setMap(null);
   })
 }
+
+function decorateDayButtons(){
+  $("button.day").on('click',function(e){
+    console.log(e);
+    $(e.target)
+      .toggleClass('btn-danger')
+      .toggleClass('btn-success')
+      .children().first()
+        .toggleClass('fa-check')
+        .toggleClass('fa-times');
+    var val = $(e.target).children('input').val();
+    $(e.target).children('input').val(
+      val === "true" ? "false" : "true"
+    )
+  })
+}
+
+// function handleOnboardForm(){
+//   $("form#onboardForm").submit(function(e){
+//
+//   })
+// }

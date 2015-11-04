@@ -14,6 +14,8 @@ var userSchema = new mongoose.Schema({
   linkedin: String,
   tokens: Array,
 
+  schedule:Array,
+
   profile: {
     name: { type: String, default: '' },
     gender: { type: String, default: '' },
