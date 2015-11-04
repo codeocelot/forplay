@@ -14,7 +14,7 @@ var setPoints = [];
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    center: {lat: 49.703364, lng: -123.153993},
+    center: {lat: 49.124092, lng:-125.902793},
     zoom: 8
   });
   setPoints.forEach(function(point,i){

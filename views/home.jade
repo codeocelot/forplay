@@ -5,7 +5,7 @@ block content
   
   .row
     .col-sm-12
-      h4 How it works
+      h2 How it works
       p We'll send you a text message when the weather is perfect at your chosen location.  Get notified up to 48 hours before big wind at Nitinat, a massive powder dump at Whistler, or chose your own conditions to look out for.
   .row
     //- .col-sm-6(style="height:100%;")
@@ -17,7 +17,7 @@ block content
             select.form-control(style="width:inherit" name="preset")
               option(value="1") Select a Popular location
               option(value='{"lat":123.123,"lng":-49,"placename":"Whistler","conditionType":"cloudCover","conditionOperator":"less","conditionValue":10,"message":"Bluebird Day in Whistler"}') Bluebird in Whistler
-              option(value="Whistler") Powder Day in Whistler
+              option(value='{"lat":123.123,"lng":-49,"placename":"Whistler","conditionType":"cloudCover","conditionOperator":"less","conditionValue":10,"message":"Bluebird Day in Whistler"}') Powder Day in Whistler
               option(value="Tofino") Primo Waves in Tofino
               option(value="Nitinat") Big Wind in Nitinat
             button.btn.btn-primary() Add
