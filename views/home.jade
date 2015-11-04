@@ -31,47 +31,48 @@ block content
           //-         a(href="#") Powder Day in Whis
             
           button.btn.btn-primary#createBtn( data-toggle='collapse' data-target=".newPoint" type="button" ) Create Custom Notification
-          form.newPoint.form.collapse(method="POST" action="/point" onsubmit="")
-            #map(style="width:100%;min-height:600px;")
-            input(type='hidden', name='_csrf', value=_csrf)
-            .form-group
-              label(for="lat" ) Latitude:
-              input.form-control#newLat(name="lat" type="number" step="any" placeholder="<--- select on map" required)
-              label(for="lng" ) Longitude:
-              input.form-control#newLng(name="lng" type="number" step="any" placeholder="<--- select on map" required)
-            
-            
-            //- label(for="phoneNumber") Phone Number:
-            //- input#phoneNumber(type="text" )
-            .form-group
-              label(for="condition") Condition:
-              select.form-control(name="conditionType")
-                option(value="windSpeed") WindSpeed (km/h)
-                option(value="temperature") Temperature (C)
-                option(value="apparentTemperature") Apparent Temperature (C)
-                option(value="pressure") Pressure (mPa)
-                option(value="precipProbability") Probability Precipitation (%)
-                option(value="precipIntensity") Precipitation Intensity (mm/hr)
-                option(value="cloudCover") Cloud Cover (%)
-                option(value="humidity") Humidity (%)
-                option(value="ozone") Ozone(DU)
-                
-              select.form-control(name="conditionOperator")
-                option(value="greater") Greater Than
-                option(value="lesser") Lesser Than
-                option(value="equal") Equal To
-              input.form-control(name="conditionValue" type="number" step="any" required placeholder="Threshold") 
-            .form-group
-              label(for="placename") What's this place's name?
-              input.form-control(name="placename" type="text" required)
-            .form-group
-              label(for="Phone Message") Phone Message (Optional)
-              input.form-control(type="text" name="message")
-            //- label(for="frequency") Update me every:
-            //- select(name="frequency")
-            //-   option(value="")
-            .form-group  
-              button.btn.btn-default(type="submit" onsubmit="return false;") Submit
+          form.newPoint.form.collapse.panel.panel-default(method="POST" action="/point" onsubmit="")
+            .panel-body
+              #map(style="width:100%;min-height:600px;")
+              input(type='hidden', name='_csrf', value=_csrf)
+              .form-group
+                label(for="lat" ) Latitude:
+                input.form-control#newLat(name="lat" type="number" step="any" placeholder="<--- select on map" required)
+                label(for="lng" ) Longitude:
+                input.form-control#newLng(name="lng" type="number" step="any" placeholder="<--- select on map" required)
+              
+              
+              //- label(for="phoneNumber") Phone Number:
+              //- input#phoneNumber(type="text" )
+              .form-group
+                label(for="condition") Condition:
+                select.form-control(name="conditionType")
+                  option(value="windSpeed") WindSpeed (km/h)
+                  option(value="temperature") Temperature (C)
+                  option(value="apparentTemperature") Apparent Temperature (C)
+                  option(value="pressure") Pressure (mPa)
+                  option(value="precipProbability") Probability Precipitation (%)
+                  option(value="precipIntensity") Precipitation Intensity (mm/hr)
+                  option(value="cloudCover") Cloud Cover (%)
+                  option(value="humidity") Humidity (%)
+                  option(value="ozone") Ozone(DU)
+                  
+                select.form-control(name="conditionOperator")
+                  option(value="greater") Greater Than
+                  option(value="lesser") Lesser Than
+                  option(value="equal") Equal To
+                input.form-control(name="conditionValue" type="number" step="any" required placeholder="Threshold") 
+              .form-group
+                label(for="placename") What's this place's name?
+                input.form-control(name="placename" type="text" required)
+              .form-group
+                label(for="Phone Message") Phone Message (Optional)
+                input.form-control(type="text" name="message")
+              //- label(for="frequency") Update me every:
+              //- select(name="frequency")
+              //-   option(value="")
+              .form-group  
+                button.btn.btn-default(type="submit" onsubmit="return false;") Submit
         div.points-container
           ul#points.list-group
 
