@@ -105,7 +105,8 @@ app.get('/points',passportConf.isAuthenticated,pointsController.getPointsRequest
 /**
  * Primary app routes.
  */
-app.get('/', passportConf.isAuthenticated,homeController.index);
+
+app.get('/', passportConf.isAuthenticated,homeController.home);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

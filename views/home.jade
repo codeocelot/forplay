@@ -1,19 +1,17 @@
 extends layout
 
 block content
-  <!-- React -->
-  //- base(href="/")
-  
 
-  <!-- React -->
   
   hr
-  .row#react-app
   .row
-    .col-sm-6(style="height:100%;")
+    .col-xs-offset-1.col-xs-10.col-md-6(style="height:100%;")
         #map(style="width:100%;min-height:600px;")
     .col-sm-6
         #controls
+          select.btn.btn-primary
+            option(value="1") Select a Popular location
+            option(value="Whistler") Whistler
           buttn.btn.btn-primary#createBtn( data-toggle='collapse' data-target=".newPoint" ) Create new trigger
           form.newPoint.form.collapse(method="POST" action="/point" onsubmit="")
             input(type='hidden', name='_csrf', value=_csrf)
@@ -61,116 +59,10 @@ block content
   
   //- script(src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript")
   script.
-    var map;
-    var newPoint;
-    var newLat,newLng;
-    var setPoints = [];
     var _csrf = '#{_csrf}';
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 49.703364, lng: -123.153993},
-        zoom: 8
-      });
-      setPoints.forEach(function(point,i){
-        setPoints[i].marker = new google.maps.Marker({
-          icon:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-          position:{lat:+point.lat,lng:+point.lng},
-          map:map
-        })
-      })
-
-      getPoints();
-      setListener();
-    }
     
-    function setListener(){
-      map.addListener('click',function(e){
-        if(newPoint){
-          newPoint.setMap(null)
-        }
-        newPoint = new google.maps.Marker({
-          icon:'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
-          position:e.latLng,
-          map:map
-        })
 
-        newLat = e.latLng.lat();
-        newLng = e.latLng.lng();
-        document.getElementById('newLat').value = newLat;
-        document.getElementById('newLng').value = newLng;
-      })
-      
 
-    }
+
     
-    function getPoints(){
-      $.get("points",function(points){
-        setPoints = points;
-        setPoints.map(function(point){
-          renderListElement(point);
-          point.marker=addMarker(point);
-        });
-        $(".watchPoint").click(function(e){
-          centerPoint(e.currentTarget.id);
-          
-        })
-        $("button.btn-remove-point").click(function(event){
-          var id = event.target.id;
-          $.ajax(
-            {
-              method:"DELETE",
-              url:'/point/'+id,
-              data:{_csrf:_csrf},
-              success:function(){
-                $('#'+id).remove();
-                removeMarker(id);
-              }
-            }
-          )
-        })
-      })
-    }
-
-    function centerPoint(id){
-      var point = setPoints.find(function(point){return point._id === id})
-      map.setCenter(new google.maps.LatLng(+point.lat,+point.lng))
-    }
-    function renderListElement(point){
-      function capitalizeFirstLetter(str){
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      }
-      var cont = "";
-      cont += "<li class='watchPoint list-group-item ' id='" + point._id + "' data-toggle='collapse' data-target='#collapse"+point._id+"' data-parent='#points'>";
-      cont += "<span>"+point.placename+"</span>";
-      //- cont += "<button data-toggle='collapse' data-target='#collapse'>Details</button>"
-      cont += "<button class='btn btn-danger btn-remove-point' id='"+point._id+"'>X</button>"
-      cont += "<div class='panel-collapse collapse' id='collapse"+point._id+"'>"
-      cont += "<span>" + capitalizeFirstLetter(point.condition.type) + " " + point.condition.operator + " than " + point.condition.value + "</span><br>"
-      cont+= "<a href='https://forecast.io/#/f/"+point.lat + ","+point.lng + "'>View Current Conditions </a>"
-      //- cont+="<a href='http://forecast.io/#/f/49.8486,-122.8766'>Alt link</a>"
-      cont += "</div>"  
-      cont += "</li>"
-      
-      $("ul#points").append(
-        cont
-      )
-    }
     
-    function addMarker(point){
-      console.log(point)
-      return new google.maps.Marker({
-        icon:'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-        position:{lat:+point.lat,lng:+point.lng},
-        map:map
-      })
-    }
-    
-    function removeMarker(id){
-      //var setPoints = setPoints || [];
-      setPoints.forEach(function(el,i){
-        if(el._id === id) setPoints[i].marker.setMap(null);
-      })
-    }
-
-
-  script(async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDH6DTDtgkpiGUnlRQb_moDKizuo2MNFzI&callback=initMap")
