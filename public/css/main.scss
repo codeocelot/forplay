@@ -94,3 +94,23 @@ ul#points{
 .points-container{
   padding-top:30px;
 }
+
+.panel{
+  background-color:rgba(255, 255, 255, 0.71);
+}
+
+.page-header{
+  @extend .text-center
+}
+
+.disabled{
+  display:none;
+}
+
+.capitalize{
+  text-transform:capitalize;
+}
+
+.day{
+  @extend .capitalize
+}

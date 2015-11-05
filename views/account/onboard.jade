@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  .panel.col-sm-6.col-sm-offset-3
+    .panel-body
+      .page-header
+        h2 You're almost there.
+        p Tell us how to notify you.
+
+      form.form-horizontal#onboardForm(action='/onboard', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.col-sm-3.control-label(for='phoneNumber') Phone Number
+          .col-sm-7
+            input.form-control(type='tel', name='phoneNumber', id='phoneNumber' required autocomplete="off" value=user.profile.phoneNumber)
+        //- .form-group
+        //-   label.col-sm-3.control-label(for='name') Name
+        //-   .col-sm-7
+        //-     input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+        include ../partials/schedule
+        button.btn.btn-primary.pull-right Let's go!
+        

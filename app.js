@@ -107,6 +107,8 @@ app.get('/points',passportConf.isAuthenticated,pointsController.getPointsRequest
  */
 
 app.get('/', passportConf.isAuthenticated,homeController.home);
+app.get('/onboard',passportConf.isAuthenticated,userController.getOnboard)
+app.post('/onboard',passportConf.isAuthenticated,userController.postOnboard)
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
@@ -168,6 +170,11 @@ app.get('/auth/instagram/callback', passport.authenticate('instagram', { failure
 });
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
+  // if(!req.user.schedule.length)
+  // // res.redirect(req.session.returnTo || '/');
+  //   res.redirect('/onboard')
+  // else
+
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/github', passport.authenticate('github'));
@@ -176,6 +183,11 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
 });
 app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
+  // if(!req.user.schedule.length)
+  // // res.redirect(req.session.returnTo || '/');
+  //   res.redirect('/onboard')
+  // else
+  console.log(req.user);
   res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/twitter', passport.authenticate('twitter'));

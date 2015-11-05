@@ -15,12 +15,12 @@ block content
       .col-sm-3
         input.form-control(type='password', name='password', id='password', placeholder='Password')
     .form-group
-      .col-sm-offset-5.col-sm-7
-        button.col-sm-3.btn.btn-primary(type='submit')
+      .col-sm-offset-5.col-sm-3
+        button.btn.btn-primary.btn-block(type='submit')
           i.fa.fa-user
           | Login
     .form-group
-      .col-sm-offset-5.col-sm-7
+      .col-sm-offset-5.col-sm-3
         a.btn.btn-link(href='/forgot') Forgot your password?
     //- .form-group
     //-   .col-sm-offset-3.col-sm-7
@@ -28,7 +28,7 @@ block content
     //- hr
     .form-group
       .col-sm-offset-5.col-sm-3
-        a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
+        a.btn.btn-block.btn-facebook.btn-social.text-center(href='/auth/facebook')
           i.fa.fa-facebook
           | Sign in with Facebook
         //- a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')

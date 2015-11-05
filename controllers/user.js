@@ -6,6 +6,7 @@ var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 
+var DAYS=  ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
 /**
  * GET /login
  * Login page.
@@ -96,7 +97,8 @@ exports.postSignup = function(req, res, next) {
       if (err) return next(err);
       req.logIn(user, function(err) {
         if (err) return next(err);
-        res.redirect('/');
+        console.log('made new user')
+        res.redirect('/onboard?newUser');
       });
     });
   });
@@ -125,8 +127,16 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
     user.profile.phoneNumber = req.body.phoneNumber || '';
-    console.log('userprofile is: ', user.profile);
-    console.log('req.body is ', req.body)
+    DAYS.forEach(function(day){
+      if(req.body[day] === 'true'){
+        user.schedule[day] = true;
+      }
+      else user.schedule[day] = false;
+    });
+    console.log(user.schedule);
+
+    // console.log('userprofile is: ', user.profile);
+    // console.log('req.body is ', req.body)
 
     user.save(function(err) {
       if (err) return next(err);
@@ -342,8 +352,8 @@ exports.postForgot = function(req, res, next) {
       });
       var mailOptions = {
         to: user.email,
-        from: 'hackathon@starter.com',
-        subject: 'Reset your password on Hackathon Starter',
+        from: 'hello@climeclast.com',
+        subject: 'Reset your password on Climecast',
         text: 'You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
           'http://' + req.headers.host + '/reset/' + token + '\n\n' +
@@ -359,3 +369,27 @@ exports.postForgot = function(req, res, next) {
     res.redirect('/forgot');
   });
 };
+
+exports.getOnboard = function(req,res){
+  if(req.user && req.user.schedule && req.user.phoneNumber){
+    return res.redirect('/');
+  }
+  res.render('account/onboard.jade')
+}
+
+exports.postOnboard = function(req,res){
+  User.findById(req.user.id,function(err,user){
+    DAYS.forEach(function(day){
+      if(req.body[day] === 'true'){
+        user.schedule[day] = true;
+      }
+      else user.schedule[day] = false;
+    });
+    user.profile.phoneNumber = req.body.phoneNumber
+    user.save(function(err) {
+      if (err) return next(err);
+      req.flash('success', { msg: 'Profile information updated.' });
+      res.redirect('/');
+    });
+  })
+}
