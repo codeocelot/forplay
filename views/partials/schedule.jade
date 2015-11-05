@@ -1,0 +1,15 @@
+.form-group
+  label.control-label When are you free? You can always change this later.
+  br
+  .col-sm-6.col-sm-offset-3
+    for day in ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']
+      if user.schedule[day]
+        button.btn.btn-block.btn-success.day(type="button")
+          | #{day}
+          i.fa.fa-check.pull-right
+          input(type="hidden" name=day value="true")
+      else 
+        button.btn.btn-block.btn-danger.day(type="button")
+          | #{day}
+          i.fa.fa-times.pull-right
+          input(type="hidden" name=day value="false")
