@@ -11759,3 +11759,7 @@ ul#points li .btn-remove-point {
 .disabled {
   display: none;
 }
+
+.capitalize, .day {
+  text-transform: capitalize;
+}

@@ -87,7 +87,7 @@ function getPoints(){
     })
     $("button.btn-remove-point").click(function(event){
       var id = event.target.id;
-      $.ajax(
+      var t = $.ajax(
         {
           method:"DELETE",
           url:'/point/'+id,
@@ -145,7 +145,6 @@ function removeMarker(id){
 
 function decorateDayButtons(){
   $("button.day").on('click',function(e){
-    console.log(e);
     $(e.target)
       .toggleClass('btn-danger')
       .toggleClass('btn-success')

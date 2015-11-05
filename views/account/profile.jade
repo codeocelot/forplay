@@ -21,22 +21,78 @@ block content
           .col-sm-7
             input.form-control(type='text', name='phoneNumber', id='phoneNumber', value='#{user.profile.phoneNumber}')
         .form-group
-          label.col-sm-3.control-label(for='gender') Gender
-          .col-sm-4
-            label.radio.col-sm-4
-              input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
-              span Male
-            label.radio.col-sm-4
-              input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
-              span Female
-        .form-group
-          label.col-sm-3.control-label(for='location') Location
-          .col-sm-7
-            input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
-        .form-group
-          label.col-sm-3.control-label(for='website') Website
-          .col-sm-7
-            input.form-control(type='text', name='website', id='website', value='#{user.profile.website}')
+          label.control-label.col-sm-3 What's your schedule like?
+          br
+          .col-sm-offset-3.col-sm-7
+            include ../partials/schedule
+                
+            //- if user.schedule.thursday
+            //-   button.btn.btn-block.btn-success.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-check.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //- else 
+            //-   button.btn.btn-block.btn-danger.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-times.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //-       
+            //- if user.schedule.thursday
+            //-   button.btn.btn-block.btn-success.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-check.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //- else 
+            //-   button.btn.btn-block.btn-danger.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-times.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //-     
+            //- if user.schedule.thursday
+            //-   button.btn.btn-block.btn-success.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-check.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //- else 
+            //-   button.btn.btn-block.btn-danger.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-times.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //-       
+            //- if user.schedule.thursday
+            //-   button.btn.btn-block.btn-success.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-check.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //- else 
+            //-   button.btn.btn-block.btn-danger.day(type="button")
+            //-     | Tuesday
+            //-     i.fa.fa-times.pull-right
+            //-     input(type="hidden" name="tuesday" value="true")
+            //-       
+            //- button.btn.btn-block.btn-success.day(type="button")
+            //-   | Wednesday
+            //-   i.fa.fa-check.pull-right
+            //-   input(type="hidden" name="wednesday" value="true")
+            //-     
+            //- button.btn.btn-block.day(type="button" class=user.schedule.thursday?'btn-success':'btn-danger')
+            //-   | Thursday
+            //-   i.fa.pull-right(class=user.schedule.thursday?'fa-check':'fa-times')
+            //-   input(type="hidden" name="thursday" value=user.schedule.thursday?'true':'false' )
+            //-     
+            //- button.btn.btn-block.btn-success.day(type="button")
+            //-   | Friday
+            //-   i.fa.fa-check.pull-right
+            //-   input(type="hidden" name="friday" value="true")
+            //- button.btn.btn-block.btn-success.day(type="button")
+            //-   | Saturday
+            //-   i.fa.fa-check.pull-right
+            //-   input(type="hidden" name="saturday" value="true")
+            //- button.btn.btn-block.btn-success.day(type="button")
+            //-   | Sunday
+            //-   i.fa.fa-check.pull-right
+            //-   input(type="hidden" name="sunday" value="true")
+        //- button.btn.btn-primary.pull-right Let's go!
         .form-group
           label.col-sm-3.control-label(for='gravatar') Gravatar
           .col-sm-4

@@ -106,3 +106,11 @@ ul#points{
 .disabled{
   display:none;
 }
+
+.capitalize{
+  text-transform:capitalize;
+}
+
+.day{
+  @extend .capitalize
+}

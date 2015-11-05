@@ -6,6 +6,7 @@ var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 
+var DAYS=  ['monday','tuesday','wednesday','thursday','friday','saturday','sunday'];
 /**
  * GET /login
  * Login page.
@@ -126,8 +127,16 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.location = req.body.location || '';
     user.profile.website = req.body.website || '';
     user.profile.phoneNumber = req.body.phoneNumber || '';
-    console.log('userprofile is: ', user.profile);
-    console.log('req.body is ', req.body)
+    DAYS.forEach(function(day){
+      if(req.body[day] === 'true'){
+        user.schedule[day] = true;
+      }
+      else user.schedule[day] = false;
+    });
+    console.log(user.schedule);
+
+    // console.log('userprofile is: ', user.profile);
+    // console.log('req.body is ', req.body)
 
     user.save(function(err) {
       if (err) return next(err);
@@ -369,17 +378,13 @@ exports.getOnboard = function(req,res){
 }
 
 exports.postOnboard = function(req,res){
-  var sched = [];
-  console.log(req.body);
-  if(req.body.monday === 'true') sched.push('monday')
-  if(req.body.tuesday === 'true') sched.push('tuesday')
-  if(req.body.wednesday === 'true') sched.push('wednesday')
-  if(req.body.thursday === 'true') sched.push('thursday')
-  if(req.body.friday === 'true') sched.push('friday')
-  if(req.body.saturday === 'true') sched.push('saturday')
-  if(req.body.sunday === 'true') sched.push('sunday')
   User.findById(req.user.id,function(err,user){
-    user.schedule = sched,
+    DAYS.forEach(function(day){
+      if(req.body[day] === 'true'){
+        user.schedule[day] = true;
+      }
+      else user.schedule[day] = false;
+    });
     user.profile.phoneNumber = req.body.phoneNumber
     user.save(function(err) {
       if (err) return next(err);
